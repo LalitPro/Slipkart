@@ -27,7 +27,7 @@ function App() {
           element={
           
                  <div className="flex flex-col items-center justify-center h-screen p-20 text-center bg-gray-100">
-      <h1 className="m-5 font-semibold text-rose-500 text-4xl md:text-9xl">
+      <h1 className="m-5 font-semibold text-rose-500 text-2xl md:text-9xl">
         Work in Progress
       </h1>
       <Link
