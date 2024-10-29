@@ -22,6 +22,15 @@ function App() {
             </>
           }
         ></Route>
+         <Route
+          path="/Cart/"
+          element={
+            <>
+              <ControlStrip />
+              <ProductDetail />
+            </>
+          }
+        ></Route>
         <Route path="*" element={<NoFound />}></Route>
       </Routes>
       <NavBar />
