@@ -46,7 +46,7 @@ function ProductListPage() {
     return <Loading />;
   }
   return (
-    <div className="flex flex-col items-center p-2 justify-evenly">
+    <div className="flex flex-col flex-wrap items-center p- justify-evenly">
       <div className="flex flex-col items-center justify-center w-full gap-4 px-10 my-5 md:flex-row">
         <input
           value={query}

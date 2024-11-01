@@ -5,18 +5,15 @@ import { HiShoppingBag } from "react-icons/hi";
 function NavBar() {
   return (
     <div className="py-4 bg-white">
-      <div className="flex items-center justify-between max-w-6xl mx-auto ">
-        <Link to="/">
+      <div className="flex items-center justify-between max-w-6xl min-w-full gap-5 mx-auto">
+        <Link to="/" className="mx-4 justify-self-start ">
           <img
-            className="h-16"
+            className="h-8 mx-5 sm:h-16 hover:contrast-150"
             src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"
           />
         </Link>{" "}
-        <h1 className="p-2 px-5 text-5xl font-semibold text-orange-400 shadow-2xl">
-          LALIT
-        </h1>
-        <Link to="/cart/">
-          <HiShoppingBag className="text-7xl" />
+        <Link to="/cart/" className="mx-4 justify-self-end ">
+          <HiShoppingBag className="text-4xl text-red-500 justify-self-end sm:text-7xl hover:text-red-600" />
         </Link>
       </div>
     </div>
