@@ -11,7 +11,10 @@ function NavBar() {
             className="h-16"
             src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"
           />
-        </Link>
+        </Link>{" "}
+        <h1 className="p-2 px-5 text-5xl font-semibold text-orange-400 shadow-2xl">
+          LALIT
+        </h1>
         <Link to="/cart/">
           <HiShoppingBag className="text-7xl" />
         </Link>
