@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { HiShoppingBag } from "react-icons/hi";
+import { CiShoppingCart } from "react-icons/ci";
 
 function NavBar() {
   return (
@@ -13,7 +13,7 @@ function NavBar() {
           />
         </Link>{" "}
         <Link to="/cart/" className="mx-4 justify-self-end ">
-          <HiShoppingBag className="text-4xl text-red-500 justify-self-end sm:text-7xl hover:text-red-600" />
+          <CiShoppingCart className="text-4xl text-red-500 justify-self-end sm:text-7xl hover:text-red-600" />
         </Link>
       </div>
     </div>

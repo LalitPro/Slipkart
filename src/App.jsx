@@ -3,7 +3,8 @@ import ProductListPage from "./ProductListPage";
 import ProductDetail from "./ProductDetail";
 import { Routes, Route, Link } from "react-router-dom";
 import NavBar from "./NavBar";
-import NoFound from "./NoFound";
+import Footer from "./Footer";
+import NotFound from "./NotFound";
 import ControlStrip from "./ControlStrip";
 
 function App() {
@@ -22,9 +23,9 @@ function App() {
             </>
           }
         ></Route>
-        <Route path="*" element={<NoFound />}></Route>
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
-      <NavBar />
+      <Footer />
     </div>
   );
 }

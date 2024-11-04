@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { getProductData } from "./api";
 import Loading from "./Loading";
 import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
+import { Helmet } from "react-helmet";
 
 function ProductDetail() {
   const id = +useParams().id;
@@ -20,6 +21,23 @@ function ProductDetail() {
 
   return product ? (
     <>
+      <Helmet>
+        <title>Meta Tags — Preview, Edit and Generate</title>
+        <meta name="title" content={product.title} />
+        <meta name="description" content={product.description} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://dripcart.netlify.app/" />
+        <meta property="og:title" content={product.title} />
+        <meta property="og:description" content={product.description} />
+        <meta property="og:image" content={product.thumbnail} />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://dripcart.netlify.app/" />
+        <meta property="twitter:title" content={product.title} />
+        <meta property="twitter:description" content={product.description} />
+        <meta property="twitter:image" content={product.thumbnail} />
+      </Helmet>
       <div className="flex flex-col p-3 m-5 text-gray-700 bg-white border shadow-2xl sm:mx-10 md:mx-20 sm:p-10 xl:flex-row">
         <img
           className="self-center w-96 xl:w-1/4 h-fit"

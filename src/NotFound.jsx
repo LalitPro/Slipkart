@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function NoFound() {
+function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center h-screen p-5 text-center bg-gray-100 sm:p-10 md:p-20">
       <h1 className="m-2 text-5xl font-semibold sm:m-5 text-rose-500 sm:text-7xl md:text-9xl">
@@ -17,4 +17,4 @@ function NoFound() {
   );
 }
 
-export default NoFound;
+export default NotFound;
