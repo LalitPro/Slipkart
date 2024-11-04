@@ -1,7 +1,7 @@
 import React from "react";
 import ProductListPage from "./ProductListPage";
 import ProductDetail from "./ProductDetail";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import NotFound from "./NotFound";
