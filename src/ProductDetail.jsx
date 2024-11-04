@@ -5,7 +5,7 @@ import { getProductData } from "./api";
 import Loading from "./Loading";
 import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
 import { Helmet } from "react-helmet";
-import ProductNotFound from "./ProductNotFound";
+import ItemNotFound from "./ItemNotFound";
 
 function ProductDetail() {
   const id = +useParams().id;
@@ -31,7 +31,7 @@ function ProductDetail() {
   }
 
   if (!product) {
-    return <ProductNotFound />;
+    return <ItemNotFound />;
   }
 
   return (
