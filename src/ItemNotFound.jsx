@@ -6,7 +6,7 @@ function ItemNotFound() {
     <div className="flex flex-col items-center justify-center h-screen p-2 text-center bg-gray-100 sm:p-5 md:p-10">
       <img src="ProductNotFound.png" className="w-96 md:w-1/2" />
       <h1 className="m-2 text-3xl font-semibold sm:m-5 text-rose-500 sm:text-5xl md:text-7xl">
-        Page Not Found
+        Product Not Found
       </h1>
       <Link
         to="/"
