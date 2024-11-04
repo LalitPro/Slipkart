@@ -22,7 +22,7 @@ function ProductDetail() {
   return product ? (
     <>
       <Helmet>
-        <title>Meta Tags — Preview, Edit and Generate</title>
+        <title>{product.title}</title>
         <meta name="title" content={product.title} />
         <meta name="description" content={product.description} />
 
