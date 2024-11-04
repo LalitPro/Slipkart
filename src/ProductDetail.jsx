@@ -5,21 +5,36 @@ import { getProductData } from "./api";
 import Loading from "./Loading";
 import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
 import { Helmet } from "react-helmet";
+import NotFound from "./NotFound";
 
 function ProductDetail() {
   const id = +useParams().id;
+
   const [product, setProduct] = useState();
+  const [loading, setLoading] = useState(true);
+
   useEffect(
     function () {
       let p = getProductData(id);
-      p.then(function (response) {
-        setProduct(response.data);
+      p.then(function (product) {
+        setProduct(product);
+        setLoading(false);
+      }).catch(function () {
+        setLoading(false);
       });
     },
     [id]
   );
 
-  return product ? (
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!product) {
+    return <NotFound />;
+  }
+
+  return (
     <>
       <Helmet>
         <title>{product.title}</title>
@@ -89,8 +104,6 @@ function ProductDetail() {
         </Link>
       </div>
     </>
-  ) : (
-    <Loading />
   );
 }
 export default ProductDetail;

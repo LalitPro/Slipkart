@@ -3,6 +3,7 @@ import ProductList from "./ProductList";
 import NoMatching from "./NoMatching";
 import { getProductList } from "./api";
 import Loading from "./Loading";
+import { Helmet } from "react-helmet";
 function ProductListPage() {
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,8 +14,8 @@ function ProductListPage() {
   useEffect(function () {
     const xyz = getProductList();
 
-    xyz.then(function (response) {
-      setProductList(response.data.products);
+    xyz.then(function (products) {
+      setProductList(products);
       setLoading(false);
     });
   }, []);
@@ -47,6 +48,21 @@ function ProductListPage() {
   }
   return (
     <div className="flex flex-col flex-wrap items-center p- justify-evenly">
+      <Helmet>
+        <title>Dripcart</title>
+        <meta name="title" content="Dripcart" />
+        <meta name="description" content="Products at your Hands" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://dripcart.netlify.app/" />
+        <meta property="og:title" content="Dripcart" />
+        <meta property="og:description" content="Products at your Hands" />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://dripcart.netlify.app/" />
+        <meta property="twitter:title" content="Dripcart" />
+        <meta property="twitter:description" content="Products at your Hands" />
+      </Helmet>
       <div className="flex flex-col items-center justify-center w-full gap-4 px-10 my-5 md:flex-row">
         <input
           value={query}

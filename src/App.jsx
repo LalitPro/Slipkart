@@ -10,7 +10,7 @@ import ControlStrip from "./ControlStrip";
 function App() {
   const path = window.location.pathname;
   return (
-    <div className="flex flex-col h-screen overflow-scroll bg-gray-200">
+    <div className="flex flex-col h-screen overflow-y-scroll bg-gray-200">
       <NavBar />
       <Routes>
         <Route index element={<ProductListPage></ProductListPage>}></Route>
@@ -27,7 +27,7 @@ function App() {
           path="/Cart/"
           element={
             <div className="flex flex-col items-center justify-center h-screen p-20 text-center bg-gray-100">
-              <h1 className="m-5 font-semibold text-rose-500 text-2xl md:text-9xl">
+              <h1 className="m-5 text-2xl font-semibold text-rose-500 md:text-9xl">
                 Work in Progress
               </h1>
               <Link
