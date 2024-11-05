@@ -14,7 +14,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route index element={<ProductListPage></ProductListPage>}></Route>
-        <Route
+         <Route
           path="/Products/:id"
           element={
             <>
@@ -39,6 +39,7 @@ function App() {
             </div>
           }
         ></Route>
+
 
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
