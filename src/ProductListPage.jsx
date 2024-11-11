@@ -12,9 +12,7 @@ function ProductListPage() {
   const [sort, setSort] = useState("default");
 
   useEffect(function () {
-    const xyz = getProductList();
-
-    xyz.then(function (products) {
+    getProductList().then(function (products) {
       setProductList(products);
       setLoading(false);
     });

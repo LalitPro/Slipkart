@@ -7,11 +7,12 @@ import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
 import { Helmet } from "react-helmet";
 import ItemNotFound from "./ItemNotFound";
 
-function ProductDetail() {
+function ProductDetail({ onAddToCart }) {
   const id = +useParams().id;
 
   const [product, setProduct] = useState();
   const [loading, setLoading] = useState(true);
+  const [count, setCount] = useState(1);
 
   useEffect(
     function () {
@@ -25,6 +26,13 @@ function ProductDetail() {
     },
     [id]
   );
+
+  function handleCountChange(event) {
+    setCount(+event.target.value);
+  }
+  function onButtonClick(event) {
+    onAddToCart(id, count);
+  }
 
   if (loading) {
     return <Loading />;
@@ -66,18 +74,22 @@ function ProductDetail() {
             {product.category}
           </h2>
           <h2 className="my-5 text-3xl font-bold text-orange-500 md:text-4xl xl:text-5xl">
-            Rs.{product.price}
+            Rs.{Math.floor(product.price * 80)}
           </h2>
           <p className="my-2 text-l sm:my-4 sm:text-2xl">
             {product.description}
           </p>
           <div className="flex items-center content-center">
             <input
-              className="text-3xl text-center border w-14"
+              className="w-24 text-3xl text-center border"
               type="number"
-              defaultValue={1}
+              value={count}
+              onChange={handleCountChange}
             />
-            <button className="p-2 px-4 m-2 text-white bg-red-500 sm:px-16 rounded-xl">
+            <button
+              onClick={onButtonClick}
+              className="p-2 px-4 m-2 text-white bg-red-500 sm:px-16 rounded-xl"
+            >
               ADD TO CART
             </button>
           </div>
@@ -87,7 +99,7 @@ function ProductDetail() {
         {id > 1 && (
           <Link
             to={"/Products/" + (id - 1)}
-            className="flex items-center justify-center p-2 px-5 text-4xl text-white bg-red-300 rounded-full hover:bg-white hover:text-red-300"
+            className="flex items-center justify-center p-2 px-5 text-xl text-white bg-red-300 rounded-full md:text-4xl hover:bg-white hover:text-red-300"
           >
             <HiArrowSmLeft />
             Previous
@@ -97,7 +109,7 @@ function ProductDetail() {
 
         <Link
           to={"/Products/" + (id + 1)}
-          className="flex items-center justify-center p-2 px-5 text-4xl text-white bg-red-300 rounded-full hover:bg-white hover:text-red-300"
+          className="flex items-center justify-center p-2 px-5 text-xl text-white bg-red-300 rounded-full md:text-4xl hover:bg-white hover:text-red-300"
         >
           <HiArrowSmRight />
           Next
