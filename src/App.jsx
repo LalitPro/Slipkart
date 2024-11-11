@@ -9,15 +9,20 @@ import ControlStrip from "./ControlStrip";
 import Cart from "./Cart";
 
 function App() {
+  const savedDataString = localStorage.getItem("my-cart") || "{}";
+  const savedData = JSON.parse(savedDataString);
   const path = window.location.pathname;
 
-  const [cart, setCart] = useState({});
+  const [cart, setCart] = useState(savedData);
 
   console.log("cart is ", cart);
 
   function handleAddToCart(productId, count) {
     const oldCount = cart[productId] || 0;
-    setCart({ ...cart, [productId]: oldCount + count });
+    const newCart = { ...cart, [productId]: oldCount + count };
+    setCart(newCart);
+    const cartString = JSON.stringify(newCart);
+    localStorage.setItem("my-cart", cartString);
   }
   const totalCount = Object.keys(cart).reduce(function (previous, current) {
     return previous + cart[current];

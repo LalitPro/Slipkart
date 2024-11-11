@@ -16,8 +16,8 @@ function NavBar({ productCount }) {
           to="/cart/"
           className="relative flex items-center justify-center mx-4 justify-self-end "
         >
-          <CiShoppingCart className="relative z-0 text-4xl text-red-500 justify-self-end sm:text-7xl hover:text-red-600" />
-          <span className="absolute z-10 ml-1 text-xl text-red-500">
+          <CiShoppingCart className="relative z-0 text-5xl text-red-500 justify-self-end sm:text-7xl hover:text-red-600" />
+          <span className="absolute top-0 right-0 z-10 px-1 text-xs text-white bg-red-500 border-2 border-red-500 rounded-full md:px-2 md:text-xl hover:text-red-500 hover:bg-white">
             {productCount}
           </span>
         </Link>
