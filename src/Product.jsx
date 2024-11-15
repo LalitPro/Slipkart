@@ -14,7 +14,7 @@ function Product({ thumbnail, category, title, price, id }) {
       <Link to={"/Products/" + id}>
         <div className="font-serif text-gray-800 lg:text-3xl">{title}</div>{" "}
       </Link>
-      <div>Rs.{Math.floor(price * 80)}</div>
+      <div> ${price}</div>
       <Link to={"/Products/" + id} className="text-indigo-700">
         More Details
       </Link>

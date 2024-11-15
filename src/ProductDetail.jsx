@@ -74,7 +74,7 @@ function ProductDetail({ onAddToCart }) {
             {product.category}
           </h2>
           <h2 className="my-5 text-3xl font-bold text-orange-500 md:text-4xl xl:text-5xl">
-            Rs.{Math.floor(product.price * 80)}
+            ${product.price}
           </h2>
           <p className="my-2 text-l sm:my-4 sm:text-2xl">
             {product.description}

@@ -45,7 +45,7 @@ function App() {
 
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
-      <Footer />
+      <Footer className="self-end" />
     </div>
   );
 }
