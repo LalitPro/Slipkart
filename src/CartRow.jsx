@@ -45,7 +45,7 @@ function CartRow({ id, quantity, onSetToCart }) {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="flex flex-col w-full justify-between  p-3 m-5 text-gray-700 bg-white border shadow-2xl sm:m-5 xl:m-10 md:flex-row sm:p-10">
+      <div className="flex flex-col w-full justify-between  p-3 text-gray-700 bg-white border-2 border-gray-200 shadow-2xl md:flex-row sm:p-10">
         <TiDeleteOutline
           onClick={removeItem}
           className="text-5xl self-center justify-self-start mr-3 hover:text-6xl"
