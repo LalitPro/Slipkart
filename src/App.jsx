@@ -7,6 +7,7 @@ import Footer from "./Footer";
 import NotFound from "./NotFound";
 import ControlStrip from "./ControlStrip";
 import Cart from "./Cart";
+import Login from "./Login";
 
 function App() {
   const savedDataString = localStorage.getItem("my-cart") || "{}";
@@ -20,6 +21,12 @@ function App() {
   function handleAddToCart(productId, count) {
     const oldCount = cart[productId] || 0;
     const newCart = { ...cart, [productId]: oldCount + count };
+    setCart(newCart);
+    const cartString = JSON.stringify(newCart);
+    localStorage.setItem("my-cart", cartString);
+  }
+  function handleSetToCart(productId, count) {
+    const newCart = { ...cart, [productId]: count };
     setCart(newCart);
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("my-cart", cartString);
@@ -41,7 +48,11 @@ function App() {
             </>
           }
         ></Route>
-        <Route path="/Cart/" element={<Cart />}></Route>
+        <Route path="/login/" element={<Login />}></Route>
+        <Route
+          path="/Cart/"
+          element={<Cart onSetToCart={handleSetToCart} />}
+        ></Route>
 
         <Route path="*" element={<NotFound />}></Route>
       </Routes>

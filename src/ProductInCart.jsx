@@ -3,10 +3,10 @@ import { getProductData } from "./api";
 import Loading from "./Loading";
 import ItemNotFound from "./ItemNotFound";
 
-function ProductInCart({ id, quantity }) {
+function ProductInCart({ id, quantity, onSetToCart }) {
   const [product, setProduct] = useState();
   const [loading, setLoading] = useState(true);
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(quantity);
 
   useEffect(
     function () {
@@ -23,9 +23,7 @@ function ProductInCart({ id, quantity }) {
 
   function handleCountChange(event) {
     setCount(+event.target.value);
-  }
-  function onButtonClick(event) {
-    onAddToCart(id, count);
+    onSetToCart(id, count);
   }
 
   if (loading) {
@@ -50,11 +48,33 @@ function ProductInCart({ id, quantity }) {
           <h2 className="justify-center my-5 font-bold text-orange-500 text-md md:text-3xl xl:text-xl">
             ${product.price}
           </h2>
-          <input
-            className="justify-end w-24 text-3xl text-center border"
-            type="number"
-            value={quantity}
-          />
+          <div className="flex items-center justify-center gap-2">
+            <button
+              onClick={() => {
+                setCount(count - 1);
+                onSetToCart(id, count - 1);
+              }}
+              className="h-full px-2 text-3xl text-center border"
+            >
+              -
+            </button>
+            <input
+              className="justify-end w-24 text-3xl text-center border"
+              type="number"
+              value={count}
+              onChange={handleCountChange}
+            />
+
+            <button
+              onClick={() => {
+                setCount(count + 1);
+                onSetToCart(id, count + 1);
+              }}
+              className="h-full px-2 text-3xl text-center border"
+            >
+              +
+            </button>
+          </div>
         </div>
       </div>
     </>

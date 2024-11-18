@@ -2,8 +2,8 @@ import React from "react";
 import ControlStrip from "./ControlStrip";
 import ProductInCart from "./ProductInCart";
 
-function Cart() {
-  const cart = JSON.parse(localStorage.getItem("my-cart"));
+function Cart({ onSetToCart }) {
+  const cart = JSON.parse(localStorage.getItem("my-cart")) || {};
 
   const listItems = Object.entries(cart).map(([key, value]) => {
     const productId = key;
@@ -12,7 +12,14 @@ function Cart() {
     console.log("key: ", key);
     console.log("value: ", value);
 
-    return <ProductInCart className="mx-4" id={key} quantity={value} />;
+    return (
+      <ProductInCart
+        onSetToCart={onSetToCart}
+        className="mx-4"
+        id={key}
+        quantity={value}
+      />
+    );
   });
   return (
     <>
