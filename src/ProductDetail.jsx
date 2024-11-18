@@ -99,6 +99,9 @@ function ProductDetail({ onAddToCart }) {
         {id > 1 && (
           <Link
             to={"/Products/" + (id - 1)}
+            onClick={() => {
+              count = 1;
+            }}
             className="flex items-center justify-center p-2 px-5 text-xl text-white bg-red-300 rounded-full md:text-4xl hover:bg-white hover:text-red-300"
           >
             <HiArrowSmLeft />
@@ -109,6 +112,9 @@ function ProductDetail({ onAddToCart }) {
 
         <Link
           to={"/Products/" + (id + 1)}
+          onClick={() => {
+            count = 1;
+          }}
           className="flex items-center justify-center p-2 px-5 text-xl text-white bg-red-300 rounded-full md:text-4xl hover:bg-white hover:text-red-300"
         >
           <HiArrowSmRight />

@@ -45,7 +45,7 @@ function ProductListPage() {
     return <Loading />;
   }
   return (
-    <div className="flex flex-col flex-wrap items-center p- justify-evenly">
+    <div className="flex flex-col flex-wrap items-center p-2 justify-evenly">
       <Helmet>
         <title>Dripcart</title>
         <meta name="title" content="Dripcart" />

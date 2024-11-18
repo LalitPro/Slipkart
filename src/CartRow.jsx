@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { getProductData } from "./api";
 import Loading from "./Loading";
 import ItemNotFound from "./ItemNotFound";
+import { TiDeleteOutline } from "react-icons/ti";
 
-function ProductInCart({ id, quantity, onSetToCart }) {
+function CartRow({ id, quantity, onSetToCart }) {
   const [product, setProduct] = useState();
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(quantity);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(
     function () {
@@ -21,6 +23,17 @@ function ProductInCart({ id, quantity, onSetToCart }) {
     [id]
   );
 
+  function removeItem() {
+    const myCart = JSON.parse(localStorage.getItem("my-cart"));
+    delete myCart[id];
+    localStorage.setItem("my-cart", JSON.stringify(myCart));
+    setIsVisible(false);
+  }
+
+  if (!isVisible) {
+    return;
+  }
+
   function handleCountChange(event) {
     setCount(+event.target.value);
     onSetToCart(id, count);
@@ -30,25 +43,25 @@ function ProductInCart({ id, quantity, onSetToCart }) {
     return <Loading />;
   }
 
-  if (!product) {
-    return <ItemNotFound />;
-  }
-
   return (
-    <>
-      <div className="flex flex-col p-3 m-5 text-gray-700 bg-white border shadow-2xl sm:m-5 xl:m-10 md:flex-row sm:p-10">
+    <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col w-full justify-between  p-3 m-5 text-gray-700 bg-white border shadow-2xl sm:m-5 xl:m-10 md:flex-row sm:p-10">
+        <TiDeleteOutline
+          onClick={removeItem}
+          className="text-5xl self-center justify-self-start mr-3 hover:text-6xl"
+        />
         <img
-          className="self-center w-full md:w-40 sm:w-80 xl:w-20 h-fit"
+          className="self-center justify-self-start w-full md:w-40 sm:w-80 xl:w-20 h-fit"
           src={product.thumbnail}
         />
-        <div className="flex flex-col items-center content-start w-full gap-5 text-xl text-gray-600 md:gap-10 xl:gap-20 md:flex-row px-3s sm:px-10">
+        <div className="flex justify-self-center flex-col items-center content-start w-full gap-5 text-xl text-gray-600 md:gap-10 xl:gap-20 md:flex-row px-3s sm:px-10">
           <h1 className="justify-start text-xl font-bold md:text-4xl xl:text-2xl">
             {product.title}
           </h1>
           <h2 className="justify-center my-5 font-bold text-orange-500 text-md md:text-3xl xl:text-xl">
             ${product.price}
           </h2>
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-self-end justify-center gap-2">
             <button
               onClick={() => {
                 setCount(count - 1);
@@ -77,7 +90,7 @@ function ProductInCart({ id, quantity, onSetToCart }) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
-export default ProductInCart;
+export default CartRow;
