@@ -8,6 +8,7 @@ import NotFound from "./NotFound";
 import ControlStrip from "./ControlStrip";
 import Cart from "./Cart";
 import Login from "./Login";
+import SignUp from "./SignUp";
 
 function App() {
   const savedDataString = localStorage.getItem("my-cart") || "{}";
@@ -49,6 +50,7 @@ function App() {
           }
         ></Route>
         <Route path="/login/" element={<Login />}></Route>
+        <Route path="/signup/" element={<SignUp />}></Route>
         <Route
           path="/Cart/"
           element={<Cart onSetToCart={handleSetToCart} />}

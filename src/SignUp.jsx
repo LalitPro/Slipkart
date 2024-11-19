@@ -1,10 +1,10 @@
 import React from "react";
 import Button from "./Button";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
 import * as Yup from "yup";
+import { Link } from "react-router-dom";
 
-function Login() {
+function SignUp() {
   function CallLoginApi(values) {
     console.log("CallLoginApi called", values.email, values.Password);
   }
@@ -43,7 +43,7 @@ function Login() {
         <div className="flex items-center justify-center gap-3">
           <img src="../images/favicon.png" alt="logo" className="w-8 mb-3" />
           <h1 className="self-center mb-4 text-2xl font-semibold">
-            Login To DripCart
+            Sign Up at DripCart
           </h1>
         </div>
         <div>
@@ -100,10 +100,10 @@ function Login() {
         >
           Login
         </Button>
-        <Link to="/signup/">Doesn't have an Account?</Link>
+        <Link to="/login/">Already have an Account?</Link>
       </form>
     </div>
   );
 }
 
-export default Login;
+export default SignUp;
