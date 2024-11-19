@@ -18,7 +18,7 @@ function CTLs() {
             <h3 className="font-semibold">$99999</h3>
           </div>
           <Button className="w-full px-3 font-semibold bg-red-500 hover:bg-red-600">
-            APPLY COUPON
+            PROCEED TO CHECKOUT
           </Button>
         </div>
       </div>
