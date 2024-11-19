@@ -9,13 +9,13 @@ function CAU() {
           <input
             type="text"
             placeholder="Coupon Code"
-            className="px-5 border-2"
+            className="px-5 m-2 border-2"
           />
-          <Button className="px-3 font-semibold bg-red-500 hover:bg-red-600">
+          <Button className="px-3 m-2 font-semibold bg-red-500 hover:bg-red-600">
             APPLY COUPON
           </Button>
         </div>
-        <Button className="px-3 font-semibold bg-red-500 hover:bg-red-600">
+        <Button className="px-3 m-3 font-semibold bg-red-500 hover:bg-red-600">
           APPLY COUPON
         </Button>
       </div>
