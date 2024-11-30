@@ -28,7 +28,7 @@ function CartRow({ id, quantity, onSetToCart }) {
     setIsVisible(false);
   }
 
-  if (count < 0) {
+  if (count <= 0) {
     removeItem();
     return;
   }
