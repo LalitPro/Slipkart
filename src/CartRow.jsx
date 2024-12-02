@@ -11,7 +11,7 @@ function CartRow({ product, quantity }) {
             <h3 className="flex-grow text-red-500">{product.title}</h3>
             <span classname="w-24">${product.price}</span>
             <input type="number" value={quantity} className="w-12 p-1 mx-2 rounded-md border border-gray-300" />
-            <span>${product.price * quantity}</span>
+            <span className="w-24">${product.price * quantity}</span>
   </div>);
 }
 export default CartRow;
