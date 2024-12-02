@@ -6,9 +6,10 @@ import NavBar from "./NavBar";
 import Footer from "./Footer";
 import NotFound from "./NotFound";
 import ControlStrip from "./ControlStrip";
-import Cart from "./Cart";
+import CartPage from "./CartPage";
 import Login from "./Login";
 import SignUp from "./SignUp";
+import "swiper/css";
 
 function App() {
   const savedDataString = localStorage.getItem("my-cart") || "{}";
@@ -17,15 +18,18 @@ function App() {
 
   const [cart, setCart] = useState(savedData);
 
-  console.log("cart is ", cart);
-
   function handleAddToCart(productId, count) {
     const oldCount = cart[productId] || 0;
     const newCart = { ...cart, [productId]: oldCount + count };
+    updateCart(newCart);
+  }
+
+  function updateCart(newCart) {
     setCart(newCart);
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("my-cart", cartString);
   }
+
   function handleSetToCart(productId, count) {
     const newCart = { ...cart, [productId]: count };
     setCart(newCart);
@@ -33,7 +37,7 @@ function App() {
     localStorage.setItem("my-cart", cartString);
   }
   const totalCount = Object.keys(cart).reduce(function (previous, current) {
-    return previous + cart[current];
+    return +previous + +cart[current];
   }, 0);
   return (
     <div className="flex flex-col h-screen overflow-y-scroll bg-gray-200">
@@ -53,7 +57,7 @@ function App() {
         <Route path="/signup/" element={<SignUp />}></Route>
         <Route
           path="/Cart/"
-          element={<Cart onSetToCart={handleSetToCart} />}
+          element={<CartPage cart={cart} updateCart={updateCart} />}
         ></Route>
 
         <Route path="*" element={<NotFound />}></Route>

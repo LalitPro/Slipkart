@@ -4,6 +4,8 @@ import NoMatching from "./NoMatching";
 import { getProductList } from "./api";
 import Loading from "./Loading";
 import { Helmet } from "react-helmet";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+
 function ProductListPage() {
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +47,7 @@ function ProductListPage() {
     return <Loading />;
   }
   return (
-    <div className="flex flex-col flex-wrap items-center p-2 justify-evenly">
+    <div className="flex flex-col flex-wrap flex-grow items-center p-2 justify-evenly">
       <Helmet>
         <title>Dripcart</title>
         <meta name="title" content="Dripcart" />
@@ -61,14 +63,18 @@ function ProductListPage() {
         <meta property="twitter:title" content="Dripcart" />
         <meta property="twitter:description" content="Products at your Hands" />
       </Helmet>
-      <div className="flex flex-col items-center justify-center w-full gap-4 px-10 my-5 md:flex-row">
-        <input
-          value={query}
-          type="text"
-          className="px-5 py-1 mx-10 text-2xl border shadow-lg xl:w-1/2 sm:w-96 w-72"
-          placeholder="Search"
-          onChange={handleQueryChange}
-        />
+      <div className="flex flex-col self-start items-center justify-center w-full gap-4 px-10 my-5 md:flex-row">
+        <div className="flex gap-1 px-3 bg-white xl:w-1/2 sm:w-96 w-72 text-2xl items-center justify-center border shadow-lg  mx-10">
+          <input
+            id="search"
+            value={query}
+            type="text"
+            className="px-5 hover:border-0 focus:border-0 border-white py-1 w-full"
+            placeholder="Search"
+            onChange={handleQueryChange}
+          />
+          <FaMagnifyingGlass />
+        </div>
         <select
           onChange={handleSlotChange}
           className="px-5 py-1 text-2xl border shadow-lg xl:w-1/4 sm:w-80 w-60"
