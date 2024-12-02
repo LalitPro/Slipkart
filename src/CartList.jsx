@@ -4,9 +4,14 @@ import CartRow from "./CartRow";
 function CartList({ products, cart }) {
 
 return (<div>
-          <div></div>
-          {products.map((product)=>{
-                 return <CartRow product={product} />
+          <div>
+          <span>Title</span>
+          <span>Price</span>
+          <span>Quantity</span>
+          <span>Subtotal</span>
+          </div>
+          {products.map((p)=>{
+                 return <CartRow product={p} quantity={cart[p.id]} />
           })}
 </div>);
 }
