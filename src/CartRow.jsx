@@ -8,8 +8,8 @@ function CartRow({ product, quantity }) {
             <div>
               <img className="w-full h-full object-cover" src={product.thumbnail} />
             </div>
-            <h3>{product.title}</h3>
-            <span>${product.price}</span>
+            <h3 className="flex-grow text-red-500">{product.title}</h3>
+            <span classname="w-24">${product.price}</span>
             <input type="number" value={quantity} className="w-12 p-1 mx-2 rounded-md border border-gray-300" />
             <span>${product.price * quantity}</span>
   </div>);
