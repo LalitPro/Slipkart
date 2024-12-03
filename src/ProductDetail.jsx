@@ -6,7 +6,7 @@ import Loading from "./Loading";
 import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
 import { Helmet } from "react-helmet";
 import ItemNotFound from "./ItemNotFound";
-
+import Button from "./Button";
 function ProductDetail({ onAddToCart }) {
   const id = +useParams().id;
 
@@ -86,12 +86,7 @@ function ProductDetail({ onAddToCart }) {
               value={count}
               onChange={handleCountChange}
             />
-            <button
-              onClick={onButtonClick}
-              className="p-2 px-4 m-2 text-white bg-red-500 sm:px-16 rounded-xl"
-            >
-              ADD TO CART
-            </button>
+            <Button onClick={onButtonClick}>ADD TO CART</Button>
           </div>
         </div>
       </div>

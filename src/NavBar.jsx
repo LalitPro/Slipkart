@@ -11,7 +11,7 @@ function NavBar({ productCount }) {
       <div className="flex items-center justify-between max-w-6xl min-w-full gap-5 mx-auto">
         <Link to="/" className="mx-4 justify-self-start ">
           <img
-            className="h-16 px-5 py-2 mx-5 border-orange-500 contrast-125 hover:border rounded-3xl"
+            className="h-16 px-5 py-2 mx-5 duration-100 contrast-125 hover:scale-105 rounded-3xl"
             src="../images/logo.jpg"
           />
         </Link>

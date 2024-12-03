@@ -6,7 +6,7 @@ function Button({ className, children, onClick }, props) {
       {...props}
       onClick={onClick}
       className={
-        " px-4 py-2 text-white disabled:bg-indigo-400 bg-indigo-700 rounded-md " +
+        "p-2 px-4 m-2 text-white bg-red-500 hover:bg-red-600 active:bg-red-700 sm:px-16 rounded-xl " +
         className +
         " "
       }

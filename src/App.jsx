@@ -9,6 +9,7 @@ import ControlStrip from "./ControlStrip";
 import CartPage from "./CartPage";
 import Login from "./Login";
 import SignUp from "./SignUp";
+import Test from "./test";
 import "swiper/css";
 
 function App() {
@@ -40,28 +41,30 @@ function App() {
     return +previous + +cart[current];
   }, 0);
   return (
-    <div className="flex flex-col h-screen overflow-y-scroll bg-gray-200">
+    <div className="flex flex-col h-screen overflow-y-scroll bg-gray-300">
       <NavBar productCount={totalCount} />
-      <Routes>
-        <Route index element={<ProductListPage></ProductListPage>}></Route>
-        <Route
-          path="/Products/:id"
-          element={
-            <>
-              <ControlStrip />
-              <ProductDetail onAddToCart={handleAddToCart} />
-            </>
-          }
-        ></Route>
-        <Route path="/login/" element={<Login />}></Route>
-        <Route path="/signup/" element={<SignUp />}></Route>
-        <Route
-          path="/Cart/"
-          element={<CartPage cart={cart} updateCart={updateCart} />}
-        ></Route>
-
-        <Route path="*" element={<NotFound />}></Route>
-      </Routes>
+      <div className="flex-grow bg-gray-100">
+        <Routes>
+          <Route index element={<ProductListPage></ProductListPage>}></Route>
+          <Route
+            path="/Products/:id"
+            element={
+              <>
+                <ControlStrip />
+                <ProductDetail onAddToCart={handleAddToCart} />
+              </>
+            }
+          ></Route>
+          <Route path="/login/" element={<Login />}></Route>
+          <Route path="/signup/" element={<SignUp />}></Route>
+          <Route
+            path="/Cart/"
+            element={<CartPage cart={cart} updateCart={updateCart} />}
+          ></Route>
+          <Route path="/test/" element={<Test />}></Route>
+          <Route path="*" element={<NotFound />}></Route>
+        </Routes>
+      </div>
       <Footer className="self-end" />
     </div>
   );
