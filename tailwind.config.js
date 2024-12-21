@@ -6,6 +6,9 @@ export default {
       padding: {
         12.5: "50px",
       },
+      screens: {
+        xs: "400px",
+      },
     },
   },
   plugins: [],

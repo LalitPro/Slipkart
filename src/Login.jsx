@@ -1,50 +1,62 @@
 import React from "react";
 import Button from "./Button";
-import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { useFormik, withFormik } from "formik";
+import { Link, Navigate } from "react-router-dom";
 import * as Yup from "yup";
+import axios from "axios";
 
-function Login() {
-  function CallLoginApi(values) {
-    console.log("CallLoginApi called", values.email, values.Password);
+function callLoginApi(values, bag) {
+  axios
+    .post("https://myeasykart.codeyogi.io/login", {
+      email: values.email,
+      password: values.Password,
+    })
+    .then((response) => {
+      const { user, token } = response.data;
+      localStorage.setItem("token", token);
+      bag.props.setUser(user);
+    })
+    .catch(() => {
+      alert("Invalid Credentials");
+    });
+}
+
+const schema = Yup.object().shape({
+  email: Yup.string()
+    .required("Email must required")
+    .email("Email must be a valid email"),
+  Password: Yup.string().required().min(6).max(12),
+});
+
+const initialValues = {
+  email: "",
+  password: "",
+};
+
+export function Login({
+  handleSubmit,
+  values,
+  handleChange,
+  resetForm,
+  errors,
+  handleBlur,
+  touched,
+  dirty,
+  user,
+}) {
+  if (user) {
+    return <Navigate to="/me" />;
   }
-
-  const schema = Yup.object().shape({
-    email: Yup.string()
-      .required("Email must required")
-      .email("Email must be a valid email"),
-    Password: Yup.string().required().min(8).max(16),
-  });
-
-  const {
-    handleSubmit,
-    values,
-    handleChange,
-    resetForm,
-    errors,
-    handleBlur,
-    touched,
-    isValid,
-    dirty,
-  } = useFormik({
-    initialValues: { email: "", Password: "" },
-    onSubmit: CallLoginApi,
-    validationSchema: schema,
-  });
 
   return (
     <div className="flex items-center justify-center w-full h-full bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        method="put"
-        action="https://Codeyogi.io/save"
         className="flex flex-col p-5 bg-white rounded-md shadow-md w-96"
       >
         <div className="flex items-center justify-center gap-3">
           <img src="../images/favicon.png" alt="logo" className="w-8 mb-3" />
-          <h1 className="self-center mb-4 text-2xl font-semibold">
-            Login To DripCart
-          </h1>
+          <h1 className="self-center mb-4 text-2xl">Login To DripCart</h1>
         </div>
         <div>
           <label htmlFor="email-address" className="sr-only">
@@ -87,13 +99,6 @@ function Login() {
           <div className="text-red-500">{errors.Password}</div>
         )}
         <Button
-          type="button"
-          onClick={resetForm}
-          className="self-end my-3 font-bold md:text-lg"
-        >
-          Reset
-        </Button>
-        <Button
           type="submit"
           className="self-end my-3 font-bold md:text-lg disabled:bg-red-400 "
           disabled={dirty}
@@ -106,4 +111,12 @@ function Login() {
   );
 }
 
-export default Login;
+const myHOC = withFormik({
+  validationSchema: schema,
+  initialValues: initialValues,
+  handleSubmit: callLoginApi,
+});
+
+const EasyLogin = myHOC(Login);
+
+export default EasyLogin;

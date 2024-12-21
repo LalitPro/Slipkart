@@ -32,7 +32,7 @@ function CartList({ products, cart, updateCart }) {
 
   return (
     <div>
-      <div className="flex px-4 py-2 space-x-4 font-semibold bg-gray-100 border border-gray-300">
+      <div className="hidden px-4 py-2 space-x-4 font-semibold bg-gray-100 border border-gray-300 sm:flex">
         <span className="flex-grow ml-28">Product</span>
         <span className="w-20">Price</span>
         <span className="w-32">Quantity</span>

@@ -1,51 +1,93 @@
 import React from "react";
 import Button from "./Button";
-import { useFormik } from "formik";
+import { useFormik, withFormik } from "formik";
+import { Link, Navigate } from "react-router-dom";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import axios from "axios";
 
-function SignUp() {
-  function CallLoginApi(values) {
-    console.log("CallLoginApi called", values.email, values.Password);
+function callSignUpApi(values, bag) {
+  let a = true;
+  axios
+    .post("https://myeasykart.codeyogi.io/signup", {
+      fullName: values.fullName,
+      email: values.email,
+      password: values.Password,
+    })
+    .then((response) => {
+      const { user, token } = response.data;
+      localStorage.setItem("token", token);
+      bag.props.setUser(user);
+      a = false;
+      return <Navigate to="/me" />;
+    })
+    .catch(() => {
+      if (a) {
+        return <Navigate to="/me" />;
+      } else {
+        alert("Invalid Credentials");
+      }
+    });
+}
+
+const schema = Yup.object().shape({
+  fullName: Yup.string().min(3),
+  email: Yup.string()
+    .required("Email must required")
+    .email("Email must be a valid email"),
+  Password: Yup.string().required().min(6).max(12),
+});
+
+const initialValues = {
+  email: "",
+  password: "",
+  fullName: "",
+};
+
+export function signUp({
+  handleSubmit,
+  values,
+  handleChange,
+  resetForm,
+  errors,
+  handleBlur,
+  touched,
+  dirty,
+  user,
+}) {
+  if (user) {
+    return <Navigate to="/me" />;
   }
-
-  const schema = Yup.object().shape({
-    email: Yup.string()
-      .required("Email must required")
-      .email("Email must be a valid email"),
-    Password: Yup.string().required().min(8).max(16),
-  });
-
-  const {
-    handleSubmit,
-    values,
-    handleChange,
-    resetForm,
-    errors,
-    handleBlur,
-    touched,
-    isValid,
-    dirty,
-  } = useFormik({
-    initialValues: { email: "", Password: "" },
-    onSubmit: CallLoginApi,
-    validationSchema: schema,
-  });
 
   return (
     <div className="flex items-center justify-center w-full h-full bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        method="put"
-        action="https://Codeyogi.io/save"
         className="flex flex-col p-5 bg-white rounded-md shadow-md w-96"
       >
         <div className="flex items-center justify-center gap-3">
           <img src="../images/favicon.png" alt="logo" className="w-8 mb-3" />
-          <h1 className="self-center mb-4 text-2xl font-semibold">
-            Sign Up at DripCart
-          </h1>
+          <h1 className="self-center mb-4 text-2xl">Signup To DripCart</h1>
         </div>
+        <div>
+          <label htmlFor="email-address" className="sr-only">
+            Full Name
+          </label>
+          <input
+            type="text"
+            id="fullName"
+            autoComplete="fullName"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            required
+            name="fullName"
+            value={values.fullName}
+            className="relative block w-full p-4 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none md:text-lg sm:text-sm focus:ring-indigo-500 focus:outline-none focus:border-indigo-500 focus:z-10 rounded-t-md"
+            placeholder="Full Name"
+          />
+        </div>
+        {touched.fullName && errors.fullName && (
+          <div className="text-red-500">{errors.fullName}</div>
+        )}
         <div>
           <label htmlFor="email-address" className="sr-only">
             Email
@@ -86,24 +128,26 @@ function SignUp() {
         {touched.Password && errors.Password && (
           <div className="text-red-500">{errors.Password}</div>
         )}
-        <Button
-          type="button"
-          onClick={resetForm}
-          className="self-end my-3 font-bold md:text-lg"
-        >
-          Reset
-        </Button>
+
         <Button
           type="submit"
           className="self-end my-3 font-bold md:text-lg disabled:bg-red-400 "
           disabled={dirty}
         >
-          Login
+          Sign Up
         </Button>
         <Link to="/login/">Already have an Account?</Link>
       </form>
     </div>
   );
 }
+
+const myHOC = withFormik({
+  validationSchema: schema,
+  initialValues: initialValues,
+  handleSubmit: callSignUpApi,
+});
+
+const SignUp = myHOC(signUp);
 
 export default SignUp;
