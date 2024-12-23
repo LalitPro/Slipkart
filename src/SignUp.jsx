@@ -1,9 +1,19 @@
+<<<<<<< HEAD
 import React from "react";
 import { useFormik } from "formik";
 import { Link, useNavigate, Navigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
 import Button from "./Button";
+=======
+import React, { useContext } from "react";
+import Button from "./Button";
+import { useFormik, withFormik } from "formik";
+import { Link, Navigate } from "react-router-dom";
+import * as Yup from "yup";
+import axios from "axios";
+import { UserContext } from "./Contexts";
+>>>>>>> 0f75e58 (login)
 
 function SignUp({ user }) {
   const navigate = useNavigate();
@@ -55,6 +65,20 @@ function SignUp({ user }) {
     onSubmit: signupApi,
   });
 
+<<<<<<< HEAD
+=======
+export function signUp({
+  handleSubmit,
+  values,
+  handleChange,
+  resetForm,
+  errors,
+  handleBlur,
+  touched,
+  dirty,
+}) {
+  const { user } = useContext(UserContext);
+>>>>>>> 0f75e58 (login)
   if (user) {
     return <Navigate to="/me" />;
   }

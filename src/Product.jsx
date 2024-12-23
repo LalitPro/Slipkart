@@ -27,7 +27,7 @@ function Product({ thumbnail, category, title, price, id }) {
       <Link to={"/Products/" + id}>
         <div className="font-serif text-gray-800 lg:text-3xl">{title}</div>{" "}
       </Link>
-      <div> ${price}</div>
+      <div> Rs.{Math.round(price * 84.95)}</div>
       <Link to={"/Products/" + id} className="text-indigo-700">
         More Details
       </Link>

@@ -5,17 +5,25 @@ import { getProductList } from "./api";
 import Loading from "./Loading";
 import { Helmet } from "react-helmet";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import { range } from "Lodash";
+import { Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 import { range } from "lodash";
 import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 
 function ProductListPage() {
+<<<<<<< HEAD
+=======
+  const [productData, setProductData] = useState();
+>>>>>>> 0f75e58 (login)
   const [loading, setLoading] = useState(true);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [productData, setProductData] = useState({ data: [], meta: {} });
 
+<<<<<<< HEAD
   const params = Object.fromEntries([...searchParams]);
 
   let { query, sort, page } = params;
@@ -40,11 +48,33 @@ function ProductListPage() {
 
       getProductList(sortBy, query, page, sortType).then(function (xyz) {
         setProductData(xyz);
+=======
+  let { page } = useSearchParams();
+
+  page = page || 1;
+
+  useEffect(
+    function (sort, query) {
+      let sortType;
+      let sortBy;
+      if (sort == "title") {
+        sortBy = "title";
+      } else if (sort == "price") {
+        sortBy = "price";
+      } else if (sort == "priceHighToLow") {
+        sortBy = "price";
+        sortType = "desc";
+      }
+
+      getProductList(sortBy, query, page, sortType).then(function (body) {
+        setProductData(body);
+>>>>>>> 0f75e58 (login)
         setLoading(false);
       });
     },
     [sort, query, page]
   );
+<<<<<<< HEAD
 
   function handleSearch(event) {
     setSearchParams(
@@ -52,6 +82,8 @@ function ProductListPage() {
       { replace: false }
     );
   }
+=======
+>>>>>>> 0f75e58 (login)
 
   function handleSort(event) {
     setSearchParams(
@@ -99,9 +131,9 @@ function ProductListPage() {
           value={sort}
         >
           <option value="default">Default Sort</option>
-          <option value="sortByName">Sort by Name</option>
-          <option value="sortByPriceLtoH">Sort by Price (Low to High)</option>
-          <option value="sortByPriceHtoL">Sort by Price (High to Low)</option>
+          <option value="title">Sort by Name</option>
+          <option value="price">Sort by Price (Low to High)</option>
+          <option value="priceHighToLow">Sort by Price (High to Low)</option>
         </select>
       </div>
 
@@ -117,6 +149,7 @@ function ProductListPage() {
         )}
       </div>
 
+<<<<<<< HEAD
       <div className="flex items-start justify-start gap-4">
         {range(1, productData.meta.last_page + 1).map((pageNo) => (
           <Link
@@ -133,6 +166,19 @@ function ProductListPage() {
           </Link>
         ))}
       </div>
+=======
+      {range(1, productData.meta.last_page + 1).map((pageNo) => (
+        <Link
+          key={pageNo}
+          to={"?page=" + pageNo}
+          className={
+            "p-2 m-1 " + (pageNo === page ? "bg-red-500" : "bg-red-400")
+          }
+        >
+          {pageNo}
+        </Link>
+      ))}
+>>>>>>> 0f75e58 (login)
     </div>
   );
 }

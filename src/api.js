@@ -8,6 +8,7 @@ export function getProductData(id) {
     });
 }
 
+<<<<<<< HEAD
 export function getProductsByIds(ids) {
   const commaSepeartedIds = ids.join();
   return axios
@@ -72,8 +73,30 @@ export function getCart() {
       headers: {
         Authorization: localStorage.getItem("token"),
       },
+=======
+export function getProductList(sortBy, search, page, sortType) {
+  let params = {};
+  if (sortBy) {
+    params.sortBy = sortBy;
+  }
+  if (sortType) {
+    params.sortType = sortType;
+  }
+  if (search) {
+    params.search = search;
+  }
+  if (page) {
+    params.page = page;
+  }
+  return axios
+    .get("https://myeasykart.codeyogi.io/products", {
+      params,
+      headers: { Authorization: localStorage.getItem("token") },
+>>>>>>> 0f75e58 (login)
     })
     .then(function (response) {
       return response.data;
     });
 }
+
+// header bhejna abhi jaruri hai

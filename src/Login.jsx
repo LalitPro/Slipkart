@@ -1,11 +1,17 @@
+<<<<<<< HEAD
 import { withFormik } from "formik";
 import { Link, Navigate } from "react-router-dom";
 import React from "react";
+=======
+import React, { useContext } from "react";
+>>>>>>> 0f75e58 (login)
 import Button from "./Button";
 import * as Yup from "yup";
 
 import Input from "./Input";
 import axios from "axios";
+import { UserContext } from "./Contexts";
+import { withUser, withAlert } from "./withProvider";
 
 import { withUser, withAlert } from "./withProvider";
 
@@ -21,12 +27,16 @@ function callLoginApi(values, bag) {
       bag.props.setUser(user);
     })
     .catch(() => {
+<<<<<<< HEAD
       alert("Invalid Credentials");
 
       bag.props.setAlert({
         type: "error",
         message: "Invalid Credentials " + values.myPassword,
       });
+=======
+      bag.props.setAlert({ type: "error", message: "Invalid Credentials" });
+>>>>>>> 0f75e58 (login)
     });
 }
 
@@ -48,8 +58,8 @@ export function Login({
   handleChange,
   handleBlur,
   dirty,
-  user,
 }) {
+  const { user } = useContext(UserContext);
   if (user) {
     return <Navigate to="/me" />;
   }
@@ -110,12 +120,13 @@ export function Login({
   );
 }
 
-const myHOC = withFormik({
+const FormikLogin = withFormik({
   validationSchema: schema,
   initialValues: initialValues,
   handleSubmit: callLoginApi,
-});
+})(Login);
 
+<<<<<<< HEAD
 const EasyLogin = myHOC(Login);
 
 export default withAlert(withUser(EasyLogin));
@@ -136,3 +147,6 @@ export default withAlert(withUser(EasyLogin));
 // Email
 // Request password reset button
 // back to login
+=======
+export default withAlert(withUser(FormikLogin));
+>>>>>>> 0f75e58 (login)

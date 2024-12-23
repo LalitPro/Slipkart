@@ -3,8 +3,10 @@ import { IoPersonCircleSharp } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
 import { Navigate } from "react-router";
 import Button from "./Button";
+import withUser from "./withProvider";
 
 function Dashboard({ user, setUser }) {
+  console.log("Dashboard: user =", user); // Debugging
   function handleLogout() {
     localStorage.removeItem("token");
     setUser(undefined);
@@ -31,4 +33,4 @@ function Dashboard({ user, setUser }) {
   );
 }
 
-export default Dashboard;
+export default withUser(Dashboard);
