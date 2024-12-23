@@ -5,7 +5,7 @@ import { getProductList } from "./api";
 import Loading from "./Loading";
 import { Helmet } from "react-helmet";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { range } from "Lodash";
+import { range } from "lodash";
 import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 
@@ -13,45 +13,56 @@ function ProductListPage() {
   const [productData, setProductData] = useState();
   const [loading, setLoading] = useState(true);
 
-  const [query, setQuery] = useState("");
-  const [sort, setSort] = useState("default");
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  let { page } = useSearchParams();
+  const params = Object.fromEntries([...searchParams]);
 
-  page = page || 1;
+  let { query, sort, page } = params;
+
+  query = query || "";
+  sort = sort || "default";
+  page = +page || 1;
 
   useEffect(
-    function (sort, query) {
-      let sortType;
+    function () {
       let sortBy;
+      let sortType;
+
       if (sort == "title") {
         sortBy = "title";
-      } else if (sort == "price") {
+      } else if (sort == "lowToHigh") {
         sortBy = "price";
-      } else if (sort == "priceHighToLow") {
+      } else if (sort == "highToLow") {
         sortBy = "price";
         sortType = "desc";
       }
 
-      getProductList(sortBy, query, page, sortType).then(function (body) {
-        setProductData(body);
+      getProductList(sortBy, query, page, sortType).then(function (xyz) {
+        setProductData(xyz);
         setLoading(false);
       });
     },
     [sort, query, page]
   );
 
-  function handleQueryChange(event) {
-    setQuery(event.target.value);
+  function handleSearch(event) {
+    setSearchParams(
+      { ...params, query: event.target.value, page: 1 },
+      { replace: false }
+    );
   }
 
-  function handleSlotChange(event) {
-    setSort(event.target.value);
+  function handleSort(event) {
+    setSearchParams(
+      { ...params, sort: event.target.value },
+      { replace: false }
+    );
   }
 
   if (loading) {
     return <Loading />;
   }
+
   return (
     <div className="flex flex-col flex-wrap items-center flex-grow p-2 justify-evenly">
       <Helmet>
@@ -77,12 +88,12 @@ function ProductListPage() {
             type="text"
             className="w-full px-5 py-1 border-white hover:border-0 focus:border-0"
             placeholder="Search"
-            onChange={handleQueryChange}
+            onChange={handleSearch}
           />
           <FaMagnifyingGlass />
         </div>
         <select
-          onChange={handleSlotChange}
+          onChange={handleSort}
           className="px-5 py-1 text-2xl border shadow-lg xl:w-1/4 sm:w-80 w-60"
           value={sort}
         >
@@ -104,18 +115,22 @@ function ProductListPage() {
           </>
         )}
       </div>
-
-      {range(1, productData.meta.last_page + 1).map((pageNo) => (
-        <Link
-          key={pageNo}
-          to={"?page=" + pageNo}
-          className={
-            "p-2 m-1 " + (pageNo === page ? "bg-red-500" : "bg-red-400")
-          }
-        >
-          {pageNo}
-        </Link>
-      ))}
+      <div className="flex items-start justify-start gap-4">
+        {range(1, productData.meta.last_page + 1).map((pageNo) => (
+          <Link
+            key={pageNo}
+            to={"?" + new URLSearchParams({ ...params, page: pageNo })}
+            className={
+              "p-2 px-3 m-1 text-white hover:bg-transparent hover:text-red-500 font-bold border-2 rounded-xl " +
+              (pageNo === page
+                ? "bg-red-500 border-red-500 "
+                : "bg-red-400 border-red-400 ")
+            }
+          >
+            {pageNo}
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

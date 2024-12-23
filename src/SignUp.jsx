@@ -1,154 +1,148 @@
-import React, { useContext } from "react";
-import Button from "./Button";
-import { useFormik, withFormik } from "formik";
+import React from "react";
+import { useFormik } from "formik";
 import { Link, Navigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
-import { UserContext } from "./Contexts";
 
-function callSignUpApi(values, bag) {
-  let a = true;
-  axios
-    .post("https://myeasykart.codeyogi.io/signup", {
-      fullName: values.fullName,
-      email: values.email,
-      password: values.Password,
-    })
-    .then((response) => {
-      const { user, token } = response.data;
-      localStorage.setItem("token", token);
-      bag.props.setUser(user);
-      a = false;
-      return <Navigate to="/me" />;
-    })
-    .catch(() => {
-      if (a) {
+function SignUp() {
+  function signupApi(values) {
+    let a = true;
+    axios
+      .post("https://myeasykart.codeyogi.io/signup", {
+        fullName: values.fullName,
+        email: values.email,
+        password: values.Password,
+      })
+      .then((response) => {
+        const { user, token } = response.data;
+        localStorage.setItem("token", token);
+        bag.props.setUser(user);
+        a = false;
         return <Navigate to="/me" />;
-      } else {
-        alert("Invalid Credentials");
-      }
-    });
-}
-
-const schema = Yup.object().shape({
-  fullName: Yup.string().min(3),
-  email: Yup.string()
-    .required("Email must required")
-    .email("Email must be a valid email"),
-  Password: Yup.string().required().min(6).max(12),
-});
-
-const initialValues = {
-  email: "",
-  password: "",
-  fullName: "",
-};
-
-export function signUp({
-  handleSubmit,
-  values,
-  handleChange,
-  resetForm,
-  errors,
-  handleBlur,
-  touched,
-  dirty,
-}) {
-  const { user } = useContext(UserContext);
-  if (user) {
-    return <Navigate to="/me" />;
+      })
+      .catch(() => {
+        if (a) {
+          return <Navigate to="/me" />;
+        } else {
+          alert("Invalid Credentials");
+        }
+      });
   }
 
+  const schema = Yup.object().shape({
+    email: Yup.string().email().required(),
+    password: Yup.string().min(8).required(),
+    username: Yup.string().required(),
+  });
+
+  const {
+    handleSubmit,
+    values,
+    handleChange,
+    errors,
+    handleBlur,
+    touched,
+    isValid,
+  } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      username: "",
+    },
+    onSubmit: signupApi,
+    validationSchema: schema,
+  });
+
   return (
-    <div className="flex items-center justify-center w-full h-full bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col p-5 bg-white rounded-md shadow-md w-96"
-      >
-        <div className="flex items-center justify-center gap-3">
-          <img src="../images/favicon.png" alt="logo" className="w-8 mb-3" />
-          <h1 className="self-center mb-4 text-2xl">Signup To DripCart</h1>
-        </div>
-        <div>
-          <label htmlFor="email-address" className="sr-only">
-            Full Name
-          </label>
+    <div>
+      <div className="flex justify-center">
+        <Link to="/">
+          <img src="/imgs/weshop.png" className="w-32 md:w-40" />
+        </Link>
+      </div>
+      <div className="justify-center mb-4 md:flex">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col items-center justify-center m-4 text-center border-2 border-red-400 rounded-md md:w-3/4"
+        >
+          <h1 className="text-4xl font-black font-Shadows ">Username</h1>
           <input
+            onBlur={handleBlur}
+            name="username"
+            value={values.username}
+            onChange={handleChange}
             type="text"
-            id="fullName"
-            autoComplete="fullName"
-            onChange={handleChange}
-            onBlur={handleBlur}
+            autoComplete="username"
             required
-            name="fullName"
-            value={values.fullName}
-            className="relative block w-full p-4 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none md:text-lg sm:text-sm focus:ring-indigo-500 focus:outline-none focus:border-indigo-500 focus:z-10 rounded-t-md"
-            placeholder="Full Name"
+            className="m-2 text-3xl border-2 border-red-400 rounded font-Qwitcher"
+            placeholder="username"
           />
-        </div>
-        {touched.fullName && errors.fullName && (
-          <div className="text-red-500">{errors.fullName}</div>
-        )}
-        <div>
-          <label htmlFor="email-address" className="sr-only">
-            Email
-          </label>
+
+          <h1 className="text-4xl font-black font-Shadows ">Email</h1>
           <input
-            type="email"
-            id="email-address"
-            autoComplete="email"
-            onChange={handleChange}
             onBlur={handleBlur}
-            required
             name="email"
             value={values.email}
-            className="relative block w-full p-4 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none md:text-lg sm:text-sm focus:ring-indigo-500 focus:outline-none focus:border-indigo-500 focus:z-10 rounded-t-md"
-            placeholder="Email Address"
-          />
-        </div>
-        {touched.email && errors.email && (
-          <div className="text-red-500">{errors.email}</div>
-        )}
-        <div>
-          <label htmlFor="Password" className="sr-only">
-            Password
-          </label>
-          <input
-            type="password"
-            id="myPassword"
-            autoComplete="current-password"
-            required
-            name="Password"
             onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.Password}
-            className="relative block w-full p-4 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none md:text-lg sm:text-sm focus:ring-indigo-500 focus:outline-none focus:border-indigo-500 focus:z-10 rounded-b-md"
-            placeholder="Password"
+            id="email"
+            autoComplete="email"
+            required
+            type="email"
+            className="m-2 text-3xl border-2 border-red-400 rounded font-Qwitcher"
+            placeholder="Email"
           />
-        </div>
-        {touched.Password && errors.Password && (
-          <div className="text-red-500">{errors.Password}</div>
-        )}
 
-        <Button
-          type="submit"
-          className="self-end my-3 font-bold md:text-lg disabled:bg-red-400 "
-          disabled={dirty}
+          {touched.email && errors.email && (
+            <div className="p-2 text-2xl text-red-500 rounded font-Shadows">
+              {errors.email}
+            </div>
+          )}
+
+          <h1 className="text-4xl font-black font-Shadows ">Password</h1>
+          <input
+            onBlur={handleBlur}
+            name="password"
+            value={values.password}
+            onChange={handleChange}
+            id="password"
+            autoComplete="current-password"
+            type="password"
+            className="m-2 text-3xl border-2 border-red-400 rounded font-Qwitcher"
+            placeholder="password"
+          />
+
+          {touched.password && errors.password && (
+            <div className="p-2 text-2xl text-red-500 rounded font-Shadows">
+              {errors.password}
+            </div>
+          )}
+
+          <button
+            disabled={!isValid}
+            type="submit"
+            className="p-2 m-2 text-2xl bg-red-400 rounded-lg disabled:bg-neutral-700 disabled:hover:none hover:bg-sky-500 font-Dancing"
+          >
+            CONTINUE
+          </button>
+        </form>
+      </div>
+
+      <div className="mx-4 border-t-2 border-slate-500"></div>
+
+      <div className="flex flex-col items-center justify-center mb-4 md:flex-row">
+        <h1 className="flex flex-col items-center text-3xl text-blue-400 md:flex-row font-Pacifico">
+          Already Have ACCOUNT?
+        </h1>
+        <Link
+          to="/log-in"
+          className="mx-2 text-3xl text-red-400 underline font-Shadows hover:italic"
         >
-          Sign Up
-        </Button>
-        <Link to="/login/">Already have an Account?</Link>
-      </form>
+          {" "}
+          <h1>Click Here</h1>{" "}
+        </Link>
+      </div>
     </div>
   );
 }
-
-const myHOC = withFormik({
-  validationSchema: schema,
-  initialValues: initialValues,
-  handleSubmit: callSignUpApi,
-});
-
-const SignUp = myHOC(signUp);
 
 export default SignUp;

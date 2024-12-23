@@ -78,7 +78,7 @@ function App() {
                 }
               />
               <Route
-                path="/login/"
+                path="/login"
                 element={
                   <AuthRoute>
                     <Login />
@@ -86,7 +86,7 @@ function App() {
                 }
               />
               <Route
-                path="/signup/"
+                path="/signup"
                 element={
                   <AuthRoute>
                     <SignUp />
@@ -94,14 +94,14 @@ function App() {
                 }
               />
               <Route
-                path="/Cart/"
+                path="/Cart"
                 element={
                   <UserRoute>
                     <CartPage cart={cart} updateCart={updateCart} />
                   </UserRoute>
                 }
               />
-              <Route path="/test/" element={<Test />} />
+              <Route path="/test" element={<Test />} />
               <Route
                 path="/me"
                 element={

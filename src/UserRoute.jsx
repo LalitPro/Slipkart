@@ -1,8 +1,8 @@
+import React from "react";
 import { Navigate } from "react-router";
-import withUser from "./withUser";
+import withUser from "./withProvider";
 
-function UserRoute({ children, user }) {
-  console.log("UserRoute: user =", user); // Debugging
+function UserRoute({ user, children }) {
   if (!user) {
     return <Navigate to="/login" />;
   }

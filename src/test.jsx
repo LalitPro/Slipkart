@@ -1,8 +1,7 @@
 import React from "react";
-import Dashboard from "./Dashboard";
 
 function Test() {
-  return <Dashboard></Dashboard>;
+  return;
 }
 
 export default Test;
