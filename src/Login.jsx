@@ -1,15 +1,19 @@
+import { withFormik } from "formik";
+import { Link, Navigate } from "react-router-dom";
 import React from "react";
 import Button from "./Button";
-import { useFormik, withFormik } from "formik";
-import { Link, Navigate } from "react-router-dom";
 import * as Yup from "yup";
+
+import Input from "./Input";
 import axios from "axios";
+
+import { withUser, withAlert } from "./withProvider";
 
 function callLoginApi(values, bag) {
   axios
     .post("https://myeasykart.codeyogi.io/login", {
       email: values.email,
-      password: values.Password,
+      password: values.myPassword,
     })
     .then((response) => {
       const { user, token } = response.data;
@@ -18,29 +22,31 @@ function callLoginApi(values, bag) {
     })
     .catch(() => {
       alert("Invalid Credentials");
+
+      bag.props.setAlert({
+        type: "error",
+        message: "Invalid Credentials " + values.myPassword,
+      });
     });
 }
 
 const schema = Yup.object().shape({
-  email: Yup.string()
-    .required("Email must required")
-    .email("Email must be a valid email"),
-  Password: Yup.string().required().min(6).max(12),
+  email: Yup.string().email().required(),
+  myPassword: Yup.string().min(6).max(12).required(),
 });
 
 const initialValues = {
   email: "",
-  password: "",
+  myPassword: "",
 };
 
 export function Login({
   handleSubmit,
   values,
-  handleChange,
-  resetForm,
   errors,
-  handleBlur,
   touched,
+  handleChange,
+  handleBlur,
   dirty,
   user,
 }) {
@@ -49,63 +55,56 @@ export function Login({
   }
 
   return (
-    <div className="flex items-center justify-center w-full h-full bg-gray-100">
+    <div className="flex items-center justify-center w-full h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col p-5 bg-white rounded-md shadow-md w-96"
       >
-        <div className="flex items-center justify-center gap-3">
-          <img src="../images/favicon.png" alt="logo" className="w-8 mb-3" />
-          <h1 className="self-center mb-4 text-2xl">Login To DripCart</h1>
+        {" "}
+        <div className="flex items-center gap-2 px-5">
+          <img src="../images/favicon.png" className="h-16" />
+          <h1 className="self-center text-2xl font-bold text-red-500">
+            Login To Dripcart
+          </h1>
         </div>
-        <div>
-          <label htmlFor="email-address" className="sr-only">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email-address"
-            autoComplete="email"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            required
-            name="email"
-            value={values.email}
-            className="relative block w-full p-4 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none md:text-lg sm:text-sm focus:ring-indigo-500 focus:outline-none focus:border-indigo-500 focus:z-10 rounded-t-md"
-            placeholder="Email Address"
-          />
+        <Input
+          values={values.email}
+          error={errors.email}
+          touched={touched.email}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          label="Email address"
+          id="email-address"
+          name="email"
+          type="email"
+          required
+          autoComplete="email"
+          placeholder="Email or Username"
+          className="rounded-b-none"
+        />
+        <Input
+          values={values.myPassword}
+          error={errors.myPassword}
+          touched={touched.myPassword}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          label="Password"
+          id="xyz"
+          name="myPassword"
+          type="password"
+          required
+          autoComplete="current-password"
+          placeholder="Password"
+          className="rounded-t-none"
+        />
+        <div className="flex flex-col items-start justify-center gap-5 mt-5">
+          <Button type="sumbit" className="self-end mt-3">
+            Login
+          </Button>{" "}
+          <Link to="/signup" className="text-sm text-blue-500">
+            Doesn't Have an Account
+          </Link>
         </div>
-        {touched.email && errors.email && (
-          <div className="text-red-500">{errors.email}</div>
-        )}
-        <div>
-          <label htmlFor="Password" className="sr-only">
-            Password
-          </label>
-          <input
-            type="password"
-            id="myPassword"
-            autoComplete="current-password"
-            required
-            name="Password"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.Password}
-            className="relative block w-full p-4 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none md:text-lg sm:text-sm focus:ring-indigo-500 focus:outline-none focus:border-indigo-500 focus:z-10 rounded-b-md"
-            placeholder="Password"
-          />
-        </div>
-        {touched.Password && errors.Password && (
-          <div className="text-red-500">{errors.Password}</div>
-        )}
-        <Button
-          type="submit"
-          className="self-end my-3 font-bold md:text-lg disabled:bg-red-400 "
-          disabled={dirty}
-        >
-          Login
-        </Button>
-        <Link to="/signup/">Doesn't have an Account?</Link>
       </form>
     </div>
   );
@@ -119,4 +118,21 @@ const myHOC = withFormik({
 
 const EasyLogin = myHOC(Login);
 
-export default EasyLogin;
+export default withAlert(withUser(EasyLogin));
+
+// /login
+// Don't have an account? <Link>signup</Link>
+
+// /signup
+// full name
+// email
+// username
+// password
+// confirm password
+
+// Already have an account? Login
+
+// /forgot-password
+// Email
+// Request password reset button
+// back to login

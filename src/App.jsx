@@ -14,6 +14,11 @@ import "swiper/css";
 import Dashboard from "./Dashboard";
 import axios from "axios";
 import Loading from "./Loading";
+import AlertProvider from "./Providers/AlertProvider";
+import UserProvider from "./Providers/UserProvider";
+import Alert from "./Alert";
+import UserRoute from "./UserRoute";
+import AuthRoute from "./AuthRoute";
 
 function App() {
   const savedDataString = localStorage.getItem("my-cart") || "{}";
@@ -74,7 +79,14 @@ function App() {
       ) : (
         <div className="flex-grow bg-gray-100">
           <Routes>
-            <Route index element={<ProductListPage></ProductListPage>}></Route>
+            <Route
+              index
+              element={
+                <>
+                  <ProductListPage></ProductListPage>
+                </>
+              }
+            ></Route>
             <Route
               path="/Products/:id"
               element={

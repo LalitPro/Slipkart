@@ -1,153 +1,145 @@
 import React from "react";
-import Button from "./Button";
-import { useFormik, withFormik } from "formik";
-import { Link, Navigate } from "react-router-dom";
+import { useFormik } from "formik";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
+import Button from "./Button";
 
-function callSignUpApi(values, bag) {
-  let a = true;
-  axios
-    .post("https://myeasykart.codeyogi.io/signup", {
-      fullName: values.fullName,
-      email: values.email,
-      password: values.Password,
-    })
-    .then((response) => {
-      const { user, token } = response.data;
-      localStorage.setItem("token", token);
-      bag.props.setUser(user);
-      a = false;
-      return <Navigate to="/me" />;
-    })
-    .catch(() => {
-      if (a) {
-        return <Navigate to="/me" />;
-      } else {
-        alert("Invalid Credentials");
-      }
-    });
-}
+function SignUp({ user }) {
+  const navigate = useNavigate();
 
-const schema = Yup.object().shape({
-  fullName: Yup.string().min(3),
-  email: Yup.string()
-    .required("Email must required")
-    .email("Email must be a valid email"),
-  Password: Yup.string().required().min(6).max(12),
-});
+  const signupApi = (values) => {
+    axios
+      .post("https://myeasykart.codeyogi.io/signup", {
+        fullName: values.fullName,
+        email: values.email,
+        password: values.password,
+      })
+      .then((response) => {
+        const { user, token } = response.data;
+        localStorage.setItem("token", token);
+        navigate("/me"); // Redirect after successful signup
+      })
+      .catch(() => {
+        alert("Signup failed. Please try again.");
+      });
+  };
 
-const initialValues = {
-  email: "",
-  password: "",
-  fullName: "",
-};
+  const schema = Yup.object().shape({
+    fullName: Yup.string().required("Full Name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters")
+      .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Confirm Password is required"),
+  });
 
-export function signUp({
-  handleSubmit,
-  values,
-  handleChange,
-  resetForm,
-  errors,
-  handleBlur,
-  touched,
-  dirty,
-  user,
-}) {
+  const {
+    handleSubmit,
+    values,
+    handleChange,
+    errors,
+    handleBlur,
+    touched,
+    isValid,
+  } = useFormik({
+    initialValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: schema,
+    onSubmit: signupApi,
+  });
+
   if (user) {
     return <Navigate to="/me" />;
   }
 
   return (
-    <div className="flex items-center justify-center w-full h-full bg-gray-100">
+    <div className="flex items-center justify-center w-full h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col p-5 bg-white rounded-md shadow-md w-96"
       >
-        <div className="flex items-center justify-center gap-3">
-          <img src="../images/favicon.png" alt="logo" className="w-8 mb-3" />
-          <h1 className="self-center mb-4 text-2xl">Signup To DripCart</h1>
+        <div className="flex items-center gap-2 px-5">
+          <img src="../images/favicon.png" className="h-16" />
+          <h1 className="self-center text-2xl font-bold text-red-500">
+            SignUp To Dripcart
+          </h1>
         </div>
-        <div>
-          <label htmlFor="email-address" className="sr-only">
-            Full Name
-          </label>
-          <input
-            type="text"
-            id="fullName"
-            autoComplete="fullName"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            required
-            name="fullName"
-            value={values.fullName}
-            className="relative block w-full p-4 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none md:text-lg sm:text-sm focus:ring-indigo-500 focus:outline-none focus:border-indigo-500 focus:z-10 rounded-t-md"
-            placeholder="Full Name"
-          />
-        </div>
+
+        <label className="mb-2 text-sm font-semibold">Full Name</label>
+        <input
+          name="fullName"
+          value={values.fullName}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          placeholder="Full Name"
+          className="p-2 mb-2 border border-gray-300 rounded"
+        />
         {touched.fullName && errors.fullName && (
-          <div className="text-red-500">{errors.fullName}</div>
-        )}
-        <div>
-          <label htmlFor="email-address" className="sr-only">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email-address"
-            autoComplete="email"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            required
-            name="email"
-            value={values.email}
-            className="relative block w-full p-4 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none md:text-lg sm:text-sm focus:ring-indigo-500 focus:outline-none focus:border-indigo-500 focus:z-10 rounded-t-md"
-            placeholder="Email Address"
-          />
-        </div>
-        {touched.email && errors.email && (
-          <div className="text-red-500">{errors.email}</div>
-        )}
-        <div>
-          <label htmlFor="Password" className="sr-only">
-            Password
-          </label>
-          <input
-            type="password"
-            id="myPassword"
-            autoComplete="current-password"
-            required
-            name="Password"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.Password}
-            className="relative block w-full p-4 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none md:text-lg sm:text-sm focus:ring-indigo-500 focus:outline-none focus:border-indigo-500 focus:z-10 rounded-b-md"
-            placeholder="Password"
-          />
-        </div>
-        {touched.Password && errors.Password && (
-          <div className="text-red-500">{errors.Password}</div>
+          <div className="mb-2 text-sm text-red-500">{errors.fullName}</div>
         )}
 
-        <Button
-          type="submit"
-          className="self-end my-3 font-bold md:text-lg disabled:bg-red-400 "
-          disabled={dirty}
-        >
-          Sign Up
-        </Button>
-        <Link to="/login/">Already have an Account?</Link>
+        <label className="mb-2 text-sm font-semibold">Email</label>
+        <input
+          name="email"
+          value={values.email}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          placeholder="Email"
+          type="email"
+          className="p-2 mb-2 border border-gray-300 rounded"
+        />
+        {touched.email && errors.email && (
+          <div className="mb-2 text-sm text-red-500">{errors.email}</div>
+        )}
+
+        <label className="mb-2 text-sm font-semibold">Password</label>
+        <input
+          name="password"
+          value={values.password}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          placeholder="Password"
+          type="password"
+          className="p-2 mb-2 border border-gray-300 rounded"
+        />
+        {touched.password && errors.password && (
+          <div className="mb-2 text-sm text-red-500">{errors.password}</div>
+        )}
+
+        <label className="mb-2 text-sm font-semibold">Confirm Password</label>
+        <input
+          name="confirmPassword"
+          value={values.confirmPassword}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          placeholder="Confirm Password"
+          type="password"
+          className="p-2 mb-4 border border-gray-300 rounded"
+        />
+        {touched.confirmPassword && errors.confirmPassword && (
+          <div className="mb-2 text-sm text-red-500">
+            {errors.confirmPassword}
+          </div>
+        )}
+
+        <div className="flex flex-col items-start justify-center gap-5 mt-5">
+          <Button type="sumbit" disabled={!isValid} className="self-end mt-3">
+            Login
+          </Button>{" "}
+          <Link to="/login" className="text-sm text-blue-500">
+            Doesn't Have an Account
+          </Link>
+        </div>
       </form>
     </div>
   );
 }
-
-const myHOC = withFormik({
-  validationSchema: schema,
-  initialValues: initialValues,
-  handleSubmit: callSignUpApi,
-});
-
-const SignUp = myHOC(signUp);
 
 export default SignUp;
