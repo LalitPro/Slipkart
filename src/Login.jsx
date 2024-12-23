@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "./Button";
 import { useFormik, withFormik } from "formik";
 import { Link, Navigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
+import { UserContext } from "./Contexts";
+import { withUser, withAlert } from "./withProvider";
 
 function callLoginApi(values, bag) {
   axios
@@ -17,7 +19,7 @@ function callLoginApi(values, bag) {
       bag.props.setUser(user);
     })
     .catch(() => {
-      alert("Invalid Credentials");
+      bag.props.setAlert({ type: "error", message: "Invalid Credentials" });
     });
 }
 
@@ -42,8 +44,8 @@ export function Login({
   handleBlur,
   touched,
   dirty,
-  user,
 }) {
+  const { user } = useContext(UserContext);
   if (user) {
     return <Navigate to="/me" />;
   }
@@ -111,12 +113,10 @@ export function Login({
   );
 }
 
-const myHOC = withFormik({
+const FormikLogin = withFormik({
   validationSchema: schema,
   initialValues: initialValues,
   handleSubmit: callLoginApi,
-});
+})(Login);
 
-const EasyLogin = myHOC(Login);
-
-export default EasyLogin;
+export default withAlert(withUser(FormikLogin));

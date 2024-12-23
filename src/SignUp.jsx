@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "./Button";
 import { useFormik, withFormik } from "formik";
 import { Link, Navigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
+import { UserContext } from "./Contexts";
 
 function callSignUpApi(values, bag) {
   let a = true;
@@ -52,8 +53,8 @@ export function signUp({
   handleBlur,
   touched,
   dirty,
-  user,
 }) {
+  const { user } = useContext(UserContext);
   if (user) {
     return <Navigate to="/me" />;
   }

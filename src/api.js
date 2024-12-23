@@ -8,8 +8,28 @@ export function getProductData(id) {
     });
 }
 
-export function getProductList() {
-  return axios.get("https://dummyjson.com/products").then(function (response) {
-    return response.data.products;
-  });
+export function getProductList(sortBy, search, page, sortType) {
+  let params = {};
+  if (sortBy) {
+    params.sortBy = sortBy;
+  }
+  if (sortType) {
+    params.sortType = sortType;
+  }
+  if (search) {
+    params.search = search;
+  }
+  if (page) {
+    params.page = page;
+  }
+  return axios
+    .get("https://myeasykart.codeyogi.io/products", {
+      params,
+      headers: { Authorization: localStorage.getItem("token") },
+    })
+    .then(function (response) {
+      return response.data;
+    });
 }
+
+// header bhejna abhi jaruri hai
