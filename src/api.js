@@ -2,7 +2,7 @@ import axios from "axios";
 
 export function getProductData(id) {
   return axios
-    .get("https://myeasykart.codeyogi.io/product/" + id)
+    .get("https://dummyjson.com/products/" + id)
     .then(function (response) {
       return response.data;
     });
