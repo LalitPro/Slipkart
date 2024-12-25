@@ -16,6 +16,7 @@ import AlertProvider from "./Providers/AlertProvider";
 import Alert from "./Alert";
 import UserRoute from "./UserRoute";
 import AuthRoute from "./AuthRoute";
+
 function App() {
   const savedDataString = localStorage.getItem("my-cart") || "{}";
   const savedData = JSON.parse(savedDataString);
