@@ -3,7 +3,8 @@ import { IoPersonCircleSharp } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
 import { Navigate } from "react-router";
 import Button from "./Button";
-import withUser from "./withProvider";
+import { withUser } from "./withProvider";
+import { withAlert } from "./withProvider";
 
 function Dashboard({ user, setUser }) {
   console.log("Dashboard: user =", user); // Debugging
@@ -33,4 +34,4 @@ function Dashboard({ user, setUser }) {
   );
 }
 
-export default withUser(Dashboard);
+export default withAlert(withUser(Dashboard));

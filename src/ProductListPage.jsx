@@ -5,25 +5,15 @@ import { getProductList } from "./api";
 import Loading from "./Loading";
 import { Helmet } from "react-helmet";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { range } from "Lodash";
-import { Link } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
-
 import { range } from "lodash";
 import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 
 function ProductListPage() {
-<<<<<<< HEAD
-=======
-  const [productData, setProductData] = useState();
->>>>>>> 0f75e58 (login)
   const [loading, setLoading] = useState(true);
-
   const [searchParams, setSearchParams] = useSearchParams();
   const [productData, setProductData] = useState({ data: [], meta: {} });
 
-<<<<<<< HEAD
   const params = Object.fromEntries([...searchParams]);
 
   let { query, sort, page } = params;
@@ -31,27 +21,6 @@ function ProductListPage() {
   query = query || "";
   sort = sort || "default";
   page = +page || 1;
-
-  useEffect(
-    function () {
-      let sortBy;
-      let sortType;
-
-      if (sort == "title") {
-        sortBy = "title";
-      } else if (sort == "lowToHigh") {
-        sortBy = "price";
-      } else if (sort == "highToLow") {
-        sortBy = "price";
-        sortType = "desc";
-      }
-
-      getProductList(sortBy, query, page, sortType).then(function (xyz) {
-        setProductData(xyz);
-=======
-  let { page } = useSearchParams();
-
-  page = page || 1;
 
   useEffect(
     function (sort, query) {
@@ -68,13 +37,11 @@ function ProductListPage() {
 
       getProductList(sortBy, query, page, sortType).then(function (body) {
         setProductData(body);
->>>>>>> 0f75e58 (login)
         setLoading(false);
       });
     },
     [sort, query, page]
   );
-<<<<<<< HEAD
 
   function handleSearch(event) {
     setSearchParams(
@@ -82,8 +49,6 @@ function ProductListPage() {
       { replace: false }
     );
   }
-=======
->>>>>>> 0f75e58 (login)
 
   function handleSort(event) {
     setSearchParams(
@@ -149,7 +114,6 @@ function ProductListPage() {
         )}
       </div>
 
-<<<<<<< HEAD
       <div className="flex items-start justify-start gap-4">
         {range(1, productData.meta.last_page + 1).map((pageNo) => (
           <Link
@@ -158,28 +122,16 @@ function ProductListPage() {
             className={
               "p-2 px-3 m-1 text-white hover:bg-transparent hover:text-red-500 font-bold border-2 rounded-xl " +
               (pageNo === page
-                ? "bg-red-500 border-red-500 "
-                : "bg-red-400 border-red-400 ")
+                ? "bg-red-500 border-red-500 text-red-500 hover:bg-white hover:text-red-500"
+                : "bg-transparent text-red-400 hover:bg-red-400 hover:text-white border-red-400 ")
             }
           >
             {pageNo}
           </Link>
         ))}
       </div>
-=======
-      {range(1, productData.meta.last_page + 1).map((pageNo) => (
-        <Link
-          key={pageNo}
-          to={"?page=" + pageNo}
-          className={
-            "p-2 m-1 " + (pageNo === page ? "bg-red-500" : "bg-red-400")
-          }
-        >
-          {pageNo}
-        </Link>
-      ))}
->>>>>>> 0f75e58 (login)
     </div>
   );
 }
+
 export default ProductListPage;

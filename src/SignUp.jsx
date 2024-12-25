@@ -1,84 +1,65 @@
-<<<<<<< HEAD
-import React from "react";
-import { useFormik } from "formik";
-import { Link, useNavigate, Navigate } from "react-router-dom";
-import * as Yup from "yup";
-import axios from "axios";
-import Button from "./Button";
-=======
+import { withFormik } from "formik";
+import { Link, Navigate } from "react-router-dom";
 import React, { useContext } from "react";
 import Button from "./Button";
-import { useFormik, withFormik } from "formik";
-import { Link, Navigate } from "react-router-dom";
 import * as Yup from "yup";
+import Input from "./Input";
 import axios from "axios";
 import { UserContext } from "./Contexts";
->>>>>>> 0f75e58 (login)
+import { withUser, withAlert } from "./withProvider";
 
-function SignUp({ user }) {
-  const navigate = useNavigate();
-
-  const signupApi = (values) => {
-    axios
-      .post("https://myeasykart.codeyogi.io/signup", {
-        fullName: values.fullName,
-        email: values.email,
-        password: values.password,
-      })
-      .then((response) => {
-        const { user, token } = response.data;
-        localStorage.setItem("token", token);
-        navigate("/me"); // Redirect after successful signup
-      })
-      .catch(() => {
-        alert("Signup failed. Please try again.");
+function callSignUpApi(values, bag) {
+  axios
+    .post("https://myeasykart.codeyogi.io/signup", {
+      fullName: values.fullName,
+      email: values.email,
+      password: values.password,
+    })
+    .then((response) => {
+      const { user, token } = response.data;
+      localStorage.setItem("token", token);
+      bag.props.setUser(user);
+    })
+    .catch(() => {
+      bag.props.setAlert({
+        type: "error",
+        message: "Invalid Credentials " + values.myPassword,
       });
-  };
+      bag.props.setAlert({
+        type: "error",
+        message: "SignUp failed, Please Try Again",
+      });
+    });
+}
 
-  const schema = Yup.object().shape({
-    fullName: Yup.string().required("Full Name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    password: Yup.string()
-      .min(8, "Password must be at least 8 characters")
-      .required("Password is required"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
-  });
+const schema = Yup.object().shape({
+  fullName: Yup.string().required("Full Name is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string()
+    .min(8, "Password must be at least 8 characters")
+    .required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Confirm Password is required"),
+});
 
-  const {
-    handleSubmit,
-    values,
-    handleChange,
-    errors,
-    handleBlur,
-    touched,
-    isValid,
-  } = useFormik({
-    initialValues: {
-      fullName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-    validationSchema: schema,
-    onSubmit: signupApi,
-  });
+const initialValues = {
+  fullName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
-<<<<<<< HEAD
-=======
-export function signUp({
+export function SignUp({
   handleSubmit,
   values,
-  handleChange,
-  resetForm,
   errors,
-  handleBlur,
   touched,
-  dirty,
+  handleChange,
+  handleBlur,
+  isValid,
 }) {
   const { user } = useContext(UserContext);
->>>>>>> 0f75e58 (login)
   if (user) {
     return <Navigate to="/me" />;
   }
@@ -97,7 +78,7 @@ export function signUp({
         </div>
 
         <label className="mb-2 text-sm font-semibold">Full Name</label>
-        <input
+        <Input
           name="fullName"
           value={values.fullName}
           onChange={handleChange}
@@ -110,7 +91,7 @@ export function signUp({
         )}
 
         <label className="mb-2 text-sm font-semibold">Email</label>
-        <input
+        <Input
           name="email"
           value={values.email}
           onChange={handleChange}
@@ -124,7 +105,7 @@ export function signUp({
         )}
 
         <label className="mb-2 text-sm font-semibold">Password</label>
-        <input
+        <Input
           name="password"
           value={values.password}
           onChange={handleChange}
@@ -138,7 +119,7 @@ export function signUp({
         )}
 
         <label className="mb-2 text-sm font-semibold">Confirm Password</label>
-        <input
+        <Input
           name="confirmPassword"
           value={values.confirmPassword}
           onChange={handleChange}
@@ -166,4 +147,12 @@ export function signUp({
   );
 }
 
-export default SignUp;
+const FormikSignUp = withFormik({
+  validationSchema: schema,
+  initialValues: initialValues,
+  handleSubmit: callSignUpApi,
+});
+
+const EasySignUp = FormikSignUp(SignUp);
+
+export default withAlert(withUser(EasySignUp));
