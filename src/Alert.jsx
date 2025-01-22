@@ -7,44 +7,49 @@ import { withAlert } from "./withProvider";
 const themeMap = {
   success: {
     Icon: AiOutlineCheckCircle,
-    color: " bg-green-300  border-green-500 text-green-700 ",
+    color: "bg-green-300 border-green-500 text-green-700",
   },
   error: {
     Icon: MdOutlineDangerous,
-    color: " bg-red-300 border-red-500  text-red-700 ",
+    color: "bg-red-300 border-red-500 text-red-700",
   },
 };
 
 function Alert({ alert, setAlert, removeAlert }) {
+  // Validate alert object
   if (!alert) {
-    return;
+    return null;
   }
 
-  useEffect(() => {
-    if (alert) {
-      const dismissTimer = setTimeout(removeAlert, 3 * 1000);
+  const { message, type } = alert || {};
+  if (!message || !type || !themeMap[type]) {
+    return null;
+  }
 
-      return () => clearTimeout(dismissTimer);
-    }
-  }, [alert]);
-
-  const { message, type } = alert;
   const { Icon, color } = themeMap[type];
+
+  // Automatically dismiss alert after 3 seconds
+  useEffect(() => {
+    const dismissTimer = setTimeout(removeAlert, 3000);
+    return () => clearTimeout(dismissTimer);
+  }, [alert, removeAlert]);
 
   return (
     <div
       className={
-        "rounded-md m-2 mr-4 p-4 justify-between items-center gap-3 flex-row flex border-l-4 " +
-        color
+        "rounded-md m-2 mr-4 p-4 flex items-center gap-3 border-l-4 " + color
       }
       role="alert"
     >
-      <div className="flex items-center gap-3">
-        <Icon />
-        <p className="font-bold">{type}</p>
+      <Icon className="text-xl" />
+      <div className="flex-1">
+        <p className="font-bold">{type.toUpperCase()}</p>
         <p>{message}</p>
       </div>
-      <button onClick={removeAlert} className="justify-self-end">
+      <button
+        onClick={removeAlert}
+        className="text-gray-500 hover:text-black focus:outline-none"
+      >
         <ImCross />
       </button>
     </div>

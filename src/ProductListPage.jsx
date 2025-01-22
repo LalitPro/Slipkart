@@ -40,7 +40,7 @@ function ProductListPage() {
         setLoading(false);
       });
     },
-    [sort, query, page]
+    [sort, query, page, searchParams]
   );
 
   function handleSearch(event) {
@@ -120,10 +120,10 @@ function ProductListPage() {
             key={pageNo}
             to={"?" + new URLSearchParams({ ...params, page: pageNo })}
             className={
-              "p-2 px-3 m-1 text-white hover:bg-transparent hover:text-red-500 font-bold border-2 rounded-xl " +
+              "p-2 px-3 m-1 hover:text-red-500 font-bold border-2 rounded-xl " +
               (pageNo === page
-                ? "bg-red-500 border-red-500 text-red-500 hover:bg-white hover:text-red-500"
-                : "bg-transparent text-red-400 hover:bg-red-400 hover:text-white border-red-400 ")
+                ? "bg-red-500 border-red-500 text-white hover:bg-white hover:text-red-500"
+                : "bg-transparent text-red-400 hover:bg-red-500 hover:text-white border-red-400 ")
             }
           >
             {pageNo}

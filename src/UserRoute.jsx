@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Navigate } from "react-router";
-import withUser from "./withProvider";
+import { UserContext } from "./Contexts";
 
-function UserRoute({ children, user }) {
-  console.log("UserRoute: user =", user); // Debugging
+function UserRoute({ children }) {
+  const { user } = useContext(UserContext);
 
+  console.log("UserRoute: user =", user); // Debugging log
   if (!user) {
     return <Navigate to="/login" />;
   }
-  return children;
+
+  // Ensure valid JSX is returned
+  return children || null;
 }
 
-export default withUser(UserRoute);
+export default UserRoute;
