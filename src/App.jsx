@@ -90,14 +90,6 @@ function App() {
                 }
               />
               <Route
-                path="/test"
-                element={
-                  <UserRoute>
-                    <Test />
-                  </UserRoute>
-                }
-              />
-              <Route
                 path="/me"
                 element={
                   <UserRoute>
