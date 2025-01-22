@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import ProductListPage from "./ProductListPage";
-import ProductDetail from "./ProductDetail";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
-import NotFound from "./NotFound";
+import ProductListPage from "./ProductListPage";
+import ProductDetail from "./ProductDetail";
 import ControlStrip from "./ControlStrip";
 import CartPage from "./CartPage";
 import Login from "./Login";
 import SignUp from "./SignUp";
-import Test from "./test";
 import Dashboard from "./Dashboard";
+import Test from "./Test";
+import NotFound from "./NotFound";
 import UserProvider from "./Providers/UserProvider";
 import AlertProvider from "./Providers/AlertProvider";
 import Alert from "./Alert";
@@ -31,19 +31,13 @@ function App() {
 
   function updateCart(newCart) {
     setCart(newCart);
-    const cartString = JSON.stringify(newCart);
-    localStorage.setItem("my-cart", cartString);
+    localStorage.setItem("my-cart", JSON.stringify(newCart));
   }
 
-  function handleSetToCart(productId, count) {
-    const newCart = { ...cart, [productId]: count };
-    setCart(newCart);
-    const cartString = JSON.stringify(newCart);
-    localStorage.setItem("my-cart", cartString);
-  }
-  const totalCount = Object.keys(cart).reduce(function (previous, current) {
-    return +previous + +cart[current];
-  }, 0);
+  const totalCount = Object.keys(cart).reduce(
+    (prev, current) => prev + cart[current],
+    0
+  );
 
   return (
     <div className="flex flex-col h-screen overflow-y-scroll bg-gray-300">
@@ -52,74 +46,67 @@ function App() {
       <div className="flex-grow bg-gray-100">
         <UserProvider>
           <AlertProvider>
-            <Alert></Alert>
+            <Alert />
 
             <Routes>
               <Route
                 index
                 element={
-                  <>
-                    <ProductListPage></ProductListPage>
-                  </>
+                  <UserRoute>
+                    <ProductListPage />
+                  </UserRoute>
                 }
-              ></Route>
+              />
               <Route
                 path="/Products/:id"
                 element={
-                  <>
+                  <UserRoute>
                     <ControlStrip />
                     <ProductDetail onAddToCart={handleAddToCart} />
-                  </>
+                  </UserRoute>
                 }
-              ></Route>
+              />
               <Route
-                path="/login/"
+                path="/login"
                 element={
                   <>
                     <Login />
                   </>
                 }
-              ></Route>
+              />
               <Route
-                path="/signup/"
+                path="/signup"
                 element={
-                  <>
+                  <AuthRoute>
                     <SignUp />
-                  </>
+                  </AuthRoute>
                 }
-              ></Route>
+              />
               <Route
-                path="/Cart/"
+                path="/Cart"
                 element={
-                  <>
+                  <UserRoute>
                     <CartPage cart={cart} updateCart={updateCart} />
-                  </>
+                  </UserRoute>
                 }
-              ></Route>
+              />
               <Route
-                path="/test/"
+                path="/test"
                 element={
-                  <>
+                  <UserRoute>
                     <Test />
-                  </>
+                  </UserRoute>
                 }
-              ></Route>
+              />
               <Route
                 path="/me"
                 element={
-                  <>
+                  <UserRoute>
                     <Dashboard />
-                  </>
+                  </UserRoute>
                 }
-              ></Route>
-              <Route
-                path="*"
-                element={
-                  <>
-                    <NotFound />
-                  </>
-                }
-              ></Route>
+              />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </AlertProvider>
         </UserProvider>

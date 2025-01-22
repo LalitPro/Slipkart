@@ -10,7 +10,7 @@ function AlertProvider({ children }) {
 
   return (
     <AlertContext.Provider value={{ alert, setAlert, removeAlert }}>
-      <>{children}</>
+      {children}
     </AlertContext.Provider>
   );
 }

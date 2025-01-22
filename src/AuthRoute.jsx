@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Navigate } from "react-router";
-import withUser from "./withProvider";
+import { UserContext } from "./Contexts";
 
-function AuthRoute({ children, user }) {
+function AuthRoute({ children }) {
+  const { user } = useContext(UserContext);
+
   if (user) {
     return <Navigate to="/" />;
   }
-  return children;
+
+  // Ensure valid JSX is returned
+  return children || null;
 }
 
-export default withUser(AuthRoute);
+export default AuthRoute;

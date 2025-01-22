@@ -3,24 +3,12 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 function Product({ thumbnail, category, title, price, id }) {
-  const [product, setProduct] = useState({});
-  console.log(product);
-
-  useEffect(
-    function () {
-      axios
-        .get("https://dummyjson.com/products/" + (id + 75))
-        .then((res) => setProduct(res.data));
-    },
-    [id]
-  );
-
   return (
     <div className="flex flex-col items-start p-2 mx-4 text-xl text-gray-600 bg-gray-100 rounded-md group md:w-80 max-w-96 hover:bg-gray-200 justify-evenly">
       <div className="overflow-hidden max-w-96 h-fit">
         <img
           className="self-center object-cover w-full h-full duration-300 group-hover:scale-125 aspect-square"
-          src={product.thumbnail}
+          src={thumbnail}
         />
       </div>
       <div className="lg:text-lg text-md">{category}</div>
