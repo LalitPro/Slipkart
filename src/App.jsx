@@ -9,7 +9,6 @@ import CartPage from "./CartPage";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import Dashboard from "./Dashboard";
-import Test from "./Test";
 import NotFound from "./NotFound";
 import UserProvider from "./Providers/UserProvider";
 import AlertProvider from "./Providers/AlertProvider";
